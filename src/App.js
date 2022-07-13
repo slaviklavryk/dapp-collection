@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import {ethers} from "ethers";
+import { useState } from 'react';
 
 function App() {
+  const [account, setAccount] = useState(null);
+
+  const initConnection = async () => {
+    if (typeof window.ethereum !== "undefined"){
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setAccount(accounts[0]);
+    } else {
+      console.log("Please install Metamask");
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={initConnection}>Connect</button>
+      <p>{account}</p>
     </div>
+    
   );
 }
 
